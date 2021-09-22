@@ -14,6 +14,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'sakila'
 
+#fonction qui me sert à avoir tout les acteurs
 @app.route('/actor', methods=['GET'])
 def get_actor():
     try:
@@ -30,6 +31,7 @@ def get_actor():
         print(e)
         abort(404)
 
+#fonction qui me permet de rechercher un acteur par id
 @app.route('/actor/<int:actor_id>', methods=['GET'])
 def get_actor_by_id(actor_id):
     try:
@@ -41,7 +43,7 @@ def get_actor_by_id(actor_id):
     except Exception as e:
         print(e)
         abort(404)
-
+ #fonction qui me permet de supprimer un acteur
 @app.route('/actor/<int:actor_id>', methods=['DELETE'])
 def delete_actor(id_actor):
     actor=get_actor_by_id(id_actor)
@@ -55,12 +57,13 @@ def delete_actor(id_actor):
         print(e)
         return jsonify({'is': False}) 
 
+#fonction  qui me permet d'afficher un acteur 
 @app.route('/actor', methods=['POST'])
 def create_actor():
     if not request.json and not "actor_id" in request.json:
         abort(400)
     try:
-        # creer les champs de ma nouvelle tache
+        # creer les champs de ma nouvelle acteur
         first_name  = request.json['first_name']
         last_name  = request.json['last_name']
         #last_update=request.json['last_update']
@@ -73,11 +76,14 @@ def create_actor():
     except Exception as e:
         print(e)
         return jsonify({'is':False})
+
+#fonction qui me permet de recuperer un acteur dans une liste
 def make_public_actor(actor):
     public_actor={}
     for argument in actor:
             public_actor[argument]=actor[argument]
     return public_actor
+
 
 def make_actor(tache_bdd):
     # print(tache_bdd)
